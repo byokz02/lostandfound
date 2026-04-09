@@ -1,1 +1,1 @@
-web: gunicorn --chdir lost_found_school lost_found_school.wsgi:application
+web: gunicorn lost_found_school.wsgi:application
