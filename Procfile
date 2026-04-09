@@ -1,1 +1,1 @@
-web: gunicorn lost_found_school.wsgi:application
+web: cd lost_found_school && gunicorn lost_found_school.wsgi:application
