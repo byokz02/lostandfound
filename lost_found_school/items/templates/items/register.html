@@ -1,0 +1,96 @@
+{% extends 'items/base.html' %}
+{% block title %}Register{% endblock %}
+ 
+{% block content %}
+<div style="display:flex; justify-content:center; padding-top:1.5rem;">
+  <div class="card" style="width:100%; max-width:560px; padding:2.25rem 2.5rem;">
+ 
+    <div style="text-align:center; margin-bottom:1.75rem;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="1.75"
+        stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:0.5rem; display:block; margin-left:auto; margin-right:auto;">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <line x1="19" y1="8" x2="19" y2="14"/>
+        <line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
+      <h1 style="font-family:'DM Serif Display',serif; font-size:1.45rem; font-weight:400;">Create Account</h1>
+    </div>
+ 
+    {% if form.non_field_errors %}
+      <div class="alert alert-error">{{ form.non_field_errors|join:", " }}</div>
+    {% endif %}
+ 
+    <form method="post">
+      {% csrf_token %}
+ 
+      <div class="col-2">
+        <div class="form-group">
+          <label class="form-label" for="id_username">Username</label>
+          <input type="text" name="username" id="id_username" class="form-control"
+            value="{{ form.username.value|default:'' }}" autocomplete="username" autofocus>
+          {% if form.username.errors %}<p class="field-error">{{ form.username.errors|join:", " }}</p>{% endif %}
+          {% if form.username.help_text %}<p class="field-hint">{{ form.username.help_text }}</p>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="id_email">Email</label>
+          <input type="email" name="email" id="id_email" class="form-control"
+            value="{{ form.email.value|default:'' }}">
+          {% if form.email.errors %}<p class="field-error">{{ form.email.errors|join:", " }}</p>{% endif %}
+        </div>
+      </div>
+ 
+      <div class="col-2">
+        <div class="form-group">
+          <label class="form-label" for="id_first_name">First name</label>
+          <input type="text" name="first_name" id="id_first_name" class="form-control"
+            value="{{ form.first_name.value|default:'' }}">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="id_last_name">Last name</label>
+          <input type="text" name="last_name" id="id_last_name" class="form-control"
+            value="{{ form.last_name.value|default:'' }}">
+        </div>
+      </div>
+ 
+      <div class="col-2">
+        <div class="form-group">
+          <label class="form-label" for="id_role">Role</label>
+          <input type="text" name="role" id="id_role" class="form-control"
+            value="{{ form.role.value|default:'' }}" placeholder="e.g. Student, Faculty">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="id_contact_number">Contact number</label>
+          <input type="text" name="contact_number" id="id_contact_number" class="form-control"
+            value="{{ form.contact_number.value|default:'' }}" placeholder="09XXXXXXXXX">
+        </div>
+      </div>
+ 
+      <div class="col-2">
+        <div class="form-group">
+          <label class="form-label" for="id_password1">Password</label>
+          <input type="password" name="password1" id="id_password1" class="form-control" autocomplete="new-password">
+          {% if form.password1.errors %}<p class="field-error">{{ form.password1.errors|join:", " }}</p>{% endif %}
+          <ul class="field-hint" style="padding-left:1rem; margin-top:0.35rem;">
+            <li>Your password can't be too similar to your other personal information.</li>
+            <li>Your password must contain at least 8 characters.</li>
+            <li>Your password can't be a commonly used password.</li>
+            <li>Your password can't be entirely numeric.</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="id_password2">Password confirmation</label>
+          <input type="password" name="password2" id="id_password2" class="form-control" autocomplete="new-password">
+          {% if form.password2.errors %}<p class="field-error">{{ form.password2.errors|join:", " }}</p>{% endif %}
+          <p class="field-hint">Enter the same password as before, for verification.</p>
+        </div>
+      </div>
+ 
+      <button type="submit" class="btn btn-dark btn-full" style="margin-top:0.6rem;">Register</button>
+    </form>
+ 
+    <p style="text-align:center; margin-top:1.2rem; font-size:0.875rem; color:#6b7280;">
+      Already have an account? <a href="/login/" style="color:#1a1a2e; font-weight:500;">Login here</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

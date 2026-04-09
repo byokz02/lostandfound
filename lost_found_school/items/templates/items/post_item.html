@@ -1,0 +1,44 @@
+{% extends 'items/base.html' %}
+{% block title %}{{ action }} Item{% endblock %}
+{% block nav_manage %}active{% endblock %}
+{% block extra_head %}
+<style>
+  #id_title,#id_description,#id_location,#id_date_lost_found,#id_status,#id_category{width:100%;padding:0.55rem 0.8rem;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.875rem;color:var(--navy);background:var(--white);outline:none;transition:border-color .15s,box-shadow .15s;appearance:none;}
+  #id_title:focus,#id_description:focus,#id_location:focus,#id_date_lost_found:focus,#id_status:focus,#id_category:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,26,46,0.09);}
+  #id_status,#id_category{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.75rem center;padding-right:2rem;cursor:pointer;}
+  input[type="file"]{font-size:0.82rem;color:var(--muted);width:100%;padding:0.4rem 0;cursor:pointer;}
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ action }} Item</h1>
+    <p class="page-subtitle">{% if action == 'Edit' %}Update the details of this item.{% else %}Fill in the details to post a new lost or found item.{% endif %}</p>
+  </div>
+  <a href="/manage/" class="btn btn-outline">← Back</a>
+</div>
+<div class="card" style="max-width:620px;padding:2rem 2.25rem;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group"><label class="form-label" for="id_title">Item title</label>{{ form.title }}{% if form.title.errors %}<p class="field-error">{{ form.title.errors|join:", " }}</p>{% endif %}</div>
+    <div class="col-2">
+      <div class="form-group"><label class="form-label" for="id_status">Status</label>{{ form.status }}</div>
+      <div class="form-group"><label class="form-label" for="id_category">Category</label>{{ form.category }}</div>
+    </div>
+    <div class="form-group"><label class="form-label" for="id_description">Description</label>{{ form.description }}{% if form.description.errors %}<p class="field-error">{{ form.description.errors|join:", " }}</p>{% endif %}</div>
+    <div class="col-2">
+      <div class="form-group"><label class="form-label" for="id_location">Location</label>{{ form.location }}</div>
+      <div class="form-group"><label class="form-label" for="id_date_lost_found">Date lost / found</label>{{ form.date_lost_found }}</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Photo <span style="font-weight:400;color:var(--muted);">(optional)</span></label>{{ form.photo }}
+      {% if action == 'Edit' and item.photo %}<p class="field-hint">Current: {{ item.photo.name }} — upload a new one to replace it.</p>{% endif %}
+    </div>
+    <hr class="divider">
+    <div style="display:flex;gap:0.75rem;">
+      <button type="submit" class="btn btn-dark">{% if action == 'Edit' %}Save Changes{% else %}Submit Report{% endif %}</button>
+      <a href="/manage/" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

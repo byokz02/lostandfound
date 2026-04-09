@@ -1,0 +1,29 @@
+{% extends 'items/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:center;padding-top:1.5rem;">
+  <div class="card" style="width:100%;max-width:440px;padding:2.25rem 2.5rem;">
+    <div style="text-align:center;margin-bottom:1.75rem;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+      </svg>
+      <h1 style="font-family:'DM Serif Display',serif;font-size:1.45rem;font-weight:400;">Login</h1>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.3rem;">Cebu Eastern College Lost &amp; Found</p>
+    </div>
+    {% if form.errors %}<div class="alert alert-error"><span>Invalid username or password. Please try again.</span></div>{% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" class="form-control" autocomplete="username" autofocus>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" class="form-control" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-dark btn-full" style="margin-top:0.6rem;">Login</button>
+    </form>
+    <p style="text-align:center;margin-top:1.2rem;font-size:0.82rem;color:var(--muted);">Contact your administrator to create an account.</p>
+  </div>
+</div>
+{% endblock %}

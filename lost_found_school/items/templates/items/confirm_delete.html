@@ -1,0 +1,21 @@
+{% extends 'items/base.html' %}
+{% block title %}Delete Item{% endblock %}
+{% block nav_manage %}active{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:center;padding-top:1.5rem;">
+  <div class="card" style="width:100%;max-width:460px;padding:2.25rem 2.5rem;text-align:center;">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto 0.9rem;">
+      <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+      <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+    </svg>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;">Delete Item</h1>
+    <p style="color:var(--muted);font-size:0.875rem;margin-top:0.5rem;line-height:1.6;">Are you sure you want to delete <strong>{{ item.title }}</strong>?<br>This action cannot be undone.</p>
+    <hr class="divider">
+    <div style="display:flex;gap:0.75rem;justify-content:center;">
+      <form method="post" style="display:inline;">{% csrf_token %}<button type="submit" class="btn btn-danger">Yes, Delete</button></form>
+      <a href="/manage/" class="btn btn-outline">Cancel</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+ 

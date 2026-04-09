@@ -1,0 +1,75 @@
+{% extends 'items/base.html' %}
+{% block title %}My Reports{% endblock %}
+ 
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">My Reports</h1>
+    <p class="page-subtitle">Items you have reported to the system</p>
+  </div>
+  <a href="/post/" class="btn btn-dark">+ Report Item</a>
+</div>
+ 
+<div class="card">
+  {% if items %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>Date Reported</th>
+          <th>Resolved</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <a href="/item/{{ item.pk }}/"
+              style="font-weight:500; color:var(--navy); text-decoration:none;">
+              {{ item.title }}
+            </a>
+            {% if item.category %}
+              <br><span style="font-size:0.75rem; color:var(--muted);">{{ item.category }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge {% if item.status == 'lost' %}badge-lost{% else %}badge-found{% endif %}">
+              {{ item.status }}
+            </span>
+          </td>
+          <td style="color:var(--muted);">{{ item.location }}</td>
+          <td style="color:var(--muted);">{{ item.date_reported|date:"M d, Y" }}</td>
+          <td>
+            {% if item.is_resolved %}
+              <span style="color:#16a34a; font-size:0.82rem; font-weight:500;">✓ Resolved</span>
+            {% else %}
+              <span style="color:#9ca3af; font-size:0.82rem;">Pending</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if not item.is_resolved %}
+              <a href="/resolve/{{ item.pk }}/" class="btn btn-outline btn-sm">Mark Resolved</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div style="text-align:center; padding:3.5rem 2rem; color:var(--muted);">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"
+        style="opacity:.2; margin-bottom:0.75rem; display:block; margin-left:auto; margin-right:auto;">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <p style="font-weight:500;">No reports yet</p>
+      <p style="font-size:0.82rem; margin-top:0.25rem;">
+        <a href="/post/" style="color:var(--navy);">Report your first item →</a>
+      </p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+ 

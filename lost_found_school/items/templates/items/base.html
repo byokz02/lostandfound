@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Lost & Found{% endblock %} — Cebu Eastern College</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --navy:   #1a1a2e;
+      --navy2:  #23233a;
+      --bg:     #f0f1f4;
+      --white:  #ffffff;
+      --border: #e2e4ea;
+      --muted:  #6b7280;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 6px 20px rgba(0,0,0,0.05);
+    }
+ 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+ 
+    /* Navbar */
+    nav {
+      background: var(--navy);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.25rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .nav-left  { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-right { display: flex; align-items: center; gap: 1.25rem; }
+ 
+    .nav-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-right: 0.5rem;
+    }
+    .nav-link {
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      font-size: 0.83rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-link:hover, .nav-link.active { color: #fff; border-bottom-color: rgba(255,255,255,0.5); }
+    .nav-right a {
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      font-size: 0.83rem;
+      transition: color .15s;
+    }
+    .nav-right a:hover { color: #fff; }
+    .nav-admin-badge {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.14rem 0.5rem;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.83rem;
+    }
+ 
+    /* Layout */
+    main { flex: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: 2.25rem 2rem; }
+ 
+    footer {
+      text-align: center;
+      padding: 1.1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: var(--white);
+      margin-top: auto;
+    }
+ 
+    /* Card */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+ 
+    /* Form */
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.38rem; }
+    .form-control {
+      width: 100%; padding: 0.55rem 0.8rem;
+      border: 1px solid var(--border); border-radius: 6px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+      color: var(--navy); background: var(--white);
+      outline: none; transition: border-color .15s, box-shadow .15s; appearance: none;
+    }
+    .form-control:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,26,46,0.09); }
+    textarea.form-control { resize: vertical; min-height: 88px; }
+    select.form-control {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0.75rem center; padding-right: 2rem;
+    }
+    .field-hint  { font-size: 0.77rem; color: #9ca3af; margin-top: 0.32rem; line-height: 1.5; }
+    .field-error { font-size: 0.78rem; color: #dc2626; margin-top: 0.32rem; }
+ 
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.58rem 1.2rem; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+      cursor: pointer; border: 1px solid transparent;
+      text-decoration: none; transition: background .15s; white-space: nowrap;
+    }
+    .btn-dark    { background: var(--navy); color: #fff; }
+    .btn-dark:hover { background: var(--navy2); }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--navy); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-danger  { background: #dc2626; color: #fff; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-success { background: #16a34a; color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-sm   { padding: 0.35rem 0.8rem; font-size: 0.8rem; }
+    .btn-full { width: 100%; }
+ 
+    /* Badges */
+    .badge { display: inline-block; padding: 0.18rem 0.6rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+    .badge-lost     { background: #fee2e2; color: #b91c1c; }
+    .badge-found    { background: #dcfce7; color: #15803d; }
+    .badge-resolved { background: #e0f2fe; color: #0369a1; }
+ 
+    /* Alerts */
+    .alert { padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.875rem; margin-bottom: 1rem; border: 1px solid transparent; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .alert-success { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+    .alert-error   { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+    .alert-close { background: none; border: none; cursor: pointer; color: inherit; opacity: 0.6; font-size: 1.1rem; padding: 0; line-height: 1; }
+    .alert-close:hover { opacity: 1; }
+ 
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .data-table th { text-align: left; padding: 0.7rem 1.1rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); background: #fafafa; }
+    .data-table td { padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover td { background: #fafbff; }
+ 
+    /* Grid */
+    .col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 540px) { .col-2 { grid-template-columns: 1fr; } }
+ 
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+ 
+    .page-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .page-title    { font-family: 'DM Serif Display', serif; font-size: 1.55rem; font-weight: 400; }
+    .page-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+ 
+<nav>
+  <div class="nav-left">
+    <a href="{% if user.is_authenticated %}/dashboard/{% else %}/{% endif %}" class="nav-brand">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Lost &amp; Found
+    </a>
+    {% if user.is_authenticated %}
+      <a href="/dashboard/" class="nav-link {% block nav_dashboard %}{% endblock %}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="/" class="nav-link {% block nav_browse %}{% endblock %}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Browse Reports
+      </a>
+      {% if user.is_staff or user.is_superuser %}
+        <a href="/manage/" class="nav-link {% block nav_manage %}{% endblock %}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Manage Items
+        </a>
+      {% endif %}
+    {% else %}
+      <a href="/" class="nav-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>
+        Browse Reports
+      </a>
+    {% endif %}
+  </div>
+ 
+  <div class="nav-right">
+    {% if user.is_authenticated %}
+      {% if user.is_staff or user.is_superuser %}
+        <span class="nav-admin-badge">Admin</span>
+      {% endif %}
+      <span class="nav-user">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        {{ user.username }}
+      </span>
+      <a href="/logout/">Logout</a>
+    {% else %}
+      <a href="/login/">Login</a>
+    {% endif %}
+  </div>
+</nav>
+ 
+<main>
+  {% for message in messages %}
+    <div class="alert alert-success">
+      <span>{{ message }}</span>
+      <button class="alert-close" onclick="this.parentElement.remove()">✕</button>
+    </div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+ 
+<footer>
+  Lost &amp; Found System &mdash; Cebu Eastern College
+</footer>
+</body>
+</html>
+ 

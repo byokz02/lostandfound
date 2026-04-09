@@ -1,0 +1,53 @@
+{% extends 'items/base.html' %}
+{% block title %}Manage Items{% endblock %}
+{% block nav_manage %}active{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Manage Items</h1><p class="page-subtitle">{{ items.count }} total item{{ items.count|pluralize }} in the system</p></div>
+  <a href="/post/" class="btn btn-dark">+ Add Item</a>
+</div>
+<div class="card" style="padding:0.9rem 1.25rem;margin-bottom:1.25rem;">
+  <form method="get" style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search items…" style="flex:1;min-width:180px;">
+    <select name="status" class="form-control" style="width:150px;">
+      <option value="">All Items</option>
+      <option value="lost"  {% if status_filter == 'lost'  %}selected{% endif %}>Lost</option>
+      <option value="found" {% if status_filter == 'found' %}selected{% endif %}>Found</option>
+    </select>
+    <button type="submit" class="btn btn-dark">Filter</button>
+    {% if query or status_filter %}<a href="/manage/" class="btn btn-outline">Clear</a>{% endif %}
+  </form>
+</div>
+<div class="card">
+  {% if items %}
+  <table class="data-table">
+    <thead><tr><th>Item</th><th>Status</th><th>Category</th><th>Location</th><th>Date</th><th>Resolved</th><th style="text-align:right;">Actions</th></tr></thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td><a href="/item/{{ item.pk }}/" style="font-weight:500;color:var(--navy);text-decoration:none;">{{ item.title }}</a></td>
+        <td><span class="badge {% if item.status == 'lost' %}badge-lost{% else %}badge-found{% endif %}">{{ item.status }}</span></td>
+        <td style="color:var(--muted);">{{ item.category|default:"—" }}</td>
+        <td style="color:var(--muted);">{{ item.location }}</td>
+        <td style="color:var(--muted);">{{ item.date_lost_found }}</td>
+        <td>{% if item.is_resolved %}<span style="color:#16a34a;font-size:0.82rem;font-weight:500;">✓ Yes</span>{% else %}<span style="color:#9ca3af;font-size:0.82rem;">No</span>{% endif %}</td>
+        <td>
+          <div style="display:flex;gap:0.4rem;justify-content:flex-end;">
+            <a href="/resolve/{{ item.pk }}/" class="btn btn-sm {% if item.is_resolved %}btn-outline{% else %}btn-success{% endif %}">{% if item.is_resolved %}Reopen{% else %}Resolve{% endif %}</a>
+            <a href="/edit/{{ item.pk }}/" class="btn btn-sm btn-outline">Edit</a>
+            <a href="/delete/{{ item.pk }}/" class="btn btn-sm btn-danger">Delete</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div style="text-align:center;padding:3.5rem 2rem;color:var(--muted);">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" style="opacity:.2;margin-bottom:0.75rem;display:block;margin-left:auto;margin-right:auto;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <p style="font-weight:500;">No items found</p>
+    <p style="font-size:0.82rem;margin-top:0.25rem;"><a href="/post/" style="color:var(--navy);">Add your first item →</a></p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

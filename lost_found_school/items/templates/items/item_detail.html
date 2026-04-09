@@ -1,0 +1,44 @@
+{% extends 'items/base.html' %}
+{% block title %}{{ item.title }}{% endblock %}
+{% block nav_browse %}active{% endblock %}
+{% block extra_head %}<style>@media(max-width:640px){.detail-grid{grid-template-columns:1fr!important}}</style>{% endblock %}
+{% block content %}
+<div style="margin-bottom:1.25rem;">
+  <a href="/" style="font-size:0.85rem;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Browse Reports
+  </a>
+</div>
+<div class="detail-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;max-width:860px;">
+  <div class="card" style="overflow:hidden;background:#f8fafc;min-height:280px;display:flex;align-items:center;justify-content:center;">
+    {% if item.photo %}
+      <img src="{{ item.photo.url }}" alt="{{ item.title }}" style="width:100%;height:100%;object-fit:cover;min-height:280px;display:block;">
+    {% else %}
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    {% endif %}
+  </div>
+  <div class="card" style="padding:1.75rem;">
+    <div style="display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:0.85rem;">
+      <span class="badge {% if item.status == 'lost' %}badge-lost{% else %}badge-found{% endif %}">{{ item.status }}</span>
+      {% if item.is_resolved %}<span class="badge badge-resolved">Resolved</span>{% endif %}
+      {% if item.category %}<span style="font-size:0.78rem;color:var(--muted);align-self:center;">{{ item.category }}</span>{% endif %}
+    </div>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:1.6rem;font-weight:400;line-height:1.2;margin-bottom:0.75rem;">{{ item.title }}</h1>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.65;margin-bottom:1rem;">{{ item.description }}</p>
+    <hr class="divider">
+    <dl style="display:grid;grid-template-columns:auto 1fr;gap:0.55rem 1.25rem;font-size:0.85rem;">
+      <dt style="color:var(--muted);font-weight:500;">Location</dt><dd>{{ item.location }}</dd>
+      <dt style="color:var(--muted);font-weight:500;">Date</dt><dd>{{ item.date_lost_found }}</dd>
+      <dt style="color:var(--muted);font-weight:500;">Reported on</dt><dd>{{ item.date_reported|date:"M d, Y" }}</dd>
+    </dl>
+    {% if user.is_staff or user.is_superuser %}
+      <hr class="divider">
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+        <a href="/edit/{{ item.pk }}/" class="btn btn-outline btn-sm">Edit</a>
+        <a href="/resolve/{{ item.pk }}/" class="btn btn-sm {% if item.is_resolved %}btn-outline{% else %}btn-success{% endif %}">{% if item.is_resolved %}Reopen{% else %}Mark Resolved{% endif %}</a>
+        <a href="/delete/{{ item.pk }}/" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
